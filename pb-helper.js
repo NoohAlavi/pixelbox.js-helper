@@ -1,4 +1,4 @@
-export class Vector {
+export class Vector2 {
     constructor(x = 0, y = 0) {
         this.x = x;
         this.y = y;
@@ -34,25 +34,45 @@ export class Vector {
     }
 }
 
+export var gameObjects = []
+
 export class GameObject {
     constructor(frame, x, y) {
-        this.position = new Vector(x, y);
-        this.velocity = new Vector();
+        this.position = new Vector2(x, y);
+        this.velocity = new Vector2();
         this.width = 8;
         this.height = 8;
         this.flipX = false;
         this.flipY = false;
         this.flipR = false;
         this.frame = frame;
+
+        gameObjects.push(this);
     }
 
     draw() {
         sprite(this.frame, this.position.x, this.position.y, this.flipX, this.flipY, this.flipR);
     }
 
-    update() {
+    static processAll() {
+        for (var i = 0; i < gameObjects.length; i++) {
+            gameObjects[i].process();
+            gameObjects[i].draw();
+        }
+    }
+
+    physicsProcess() {
         this.position.x += this.velocity.x;
         this.position.y += this.velocity.y;
+    }
+
+    update() {
+        //updating logic goes here
+    }
+
+    process() {
+        this.physicsProcess();
+        this.update();
     }
 
     isCollingWith(other) {
@@ -66,11 +86,10 @@ export class GameObject {
 }
 
 var prevTime = Date.now();
+export var delta;
 
-export function getDeltaTime() {
+export function calculateDeltaTime() {
     var curTime = Date.now();
-    var delta = curTime - prevTime;
+    delta = curTime - prevTime;
     prevTime = Date.now();
-
-    return delta;
 }
