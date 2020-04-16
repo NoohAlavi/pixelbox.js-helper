@@ -51,16 +51,16 @@ export class GameObject {
     }
 
     update() {
-        this.x += this.velocity.x;
-        this.y += this.velocity.y;
+        this.position.x += this.velocity.x;
+        this.position.y += this.velocity.y;
     }
 
     isCollingWith(other) {
         return (
-            this.x + this.width > other.x &&
-            this.y + this.height > other.y &&
-            other.x + other.width > this.x &&
-            other.y + other.height > this.y
+            this.position.x + this.width > other.position.x &&
+            this.position.y + this.height > other.position.y &&
+            other.position.x + other.width > this.position.x &&
+            other.position.y + other.height > this.position.y
         );
     }
 }
